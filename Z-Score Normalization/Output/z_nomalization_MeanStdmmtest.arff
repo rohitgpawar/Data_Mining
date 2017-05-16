@@ -1,0 +1,20 @@
+@relation mesocyclone
+
+@attribute baseHt real
+@attribute depth real
+@attribute coreDepth real
+@attribute baseDiam real
+@attribute baseShear real
+@attribute baseVrot real
+@attribute baseGTGVD real
+@attribute maxShear real
+@attribute maxVrot real
+@attribute meanStrength real
+@attribute MaxStrength real
+@attribute meanReflectivity real
+@attribute maxReflectivity real
+@attribute class real
+
+@data
+	  2.191620	  4.463492	  3.246045	  4.752923	  7.286870	 12.105659	 16.769230	  9.208053	 14.462865	  3.095693	  3.526967	 31.892328	 45.542934
+	  1.992422	  2.712699	  1.380521	  2.876251	  5.598759	  4.279084	  7.632718	  6.023197	  4.888453	  2.004317	  2.810856	 14.622329	 16.562340

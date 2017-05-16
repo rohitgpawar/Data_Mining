@@ -1,0 +1,25 @@
+
+
+		Confusion Matrix
+
+		 |	Predicted
+		 |	2		4
+---------+--------------
+Actual	2|	430		14
+		4|	3		236
+
+
+-----------------------
+Overall Accuracy :97.52
+-----------------------
+
+Fold 1 Accuracy :98.55
+Fold 2 Accuracy :94.2
+Fold 3 Accuracy :98.55
+Fold 4 Accuracy :95.65
+Fold 5 Accuracy :95.59
+Fold 6 Accuracy :98.53
+Fold 7 Accuracy :100
+Fold 8 Accuracy :97.06
+Fold 9 Accuracy :97.06
+Fold 10 Accuracy :100

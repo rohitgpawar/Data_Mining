@@ -1,0 +1,12 @@
+
+
+@attribute x real
+@attribute y real
+@attribute cluster real
+
+@data
+   3.166667   4.000000          1
+  15.500000   5.000000          2
+   3.166667   4.000000          3
+   9.000000   9.000000          4
+   9.000000   4.500000          5

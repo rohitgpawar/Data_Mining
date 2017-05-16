@@ -1,0 +1,402 @@
+<html>
+<head>
+<title>Data Mining - K-Means</title>
+<style>
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1026"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:.5in'>
+
+<div class=WordSection1>
+
+
+
+<h2 align=center class=MsoTitle>K-Means Clustering</h2>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+<h3>Purpose </h3>
+
+<p class=MsoNormal>Clustering is the process of grouping patterns based on
+similarity such that the patterns in the same group are similar to one another,
+and those in different groups are less similar to one another. Clustering has
+many uses, including outlier detection and unsupervised image
+segmentation.<span style='mso-spacerun:yes'>  </span>The K-Means clustering
+algorithm is one of the most widely used clustering algorithms. In this
+assignment, you are going to implement basic k-means and bisecting k-means
+algorithms. </p>
+
+<h3>Goals </h3>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><span
+style='font-family:Symbol'>·</span><span style='font-size:7.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Learn how distance based clustering algorithms work</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><span
+style='font-family:Symbol'>·</span><span style='font-size:7.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Understand how to apply clustering</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><span
+style='font-family:Symbol'>·</span><span style='font-size:7.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Understand which data sets k-means clustering is appropriate for</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><span
+style='font-family:Symbol'>·</span><span style='font-size:7.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Compare partitioning and hierarchical clustering algorithms</p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='margin-left:1.0in;text-indent:-.25in;tab-stops:list 1.0in'><o:p>&nbsp;</o:p></p>
+
+<h3>Description </h3>
+
+<p class=MsoNormal>Write two programs to cluster the sample data sets: one
+program for basic K-means algorithm and another program for Bisecting K-means
+algorithm. Two sample data sets will be provided. Make sure your program works
+with both data sets. </p>
+
+<h3>Input </h3>
+
+<p class=MsoNormal>The sample data sets to be used for this project are given
+below. The <span class=SpellE>kmtest.arff</span> file is very simple data set
+with two attributes that you can use to debug your code. The <span
+class=SpellE>mesocyclone.arff</span> file is a real data set generated from
+Doppler radar images. Both data sets are in ARFF format. The data sets are
+formatted as text files with one sample / pattern vector per line of input.
+Each line will contain a series of attribute values, separated by commas or
+spaces. The files have an ARFF header consisting of a set of tags beginning
+with the ‘@’ character. These tags provide descriptions of the attributes (name
+and type). The data begins after the @data tag, which denotes the end of the
+header. Do not use <i style='mso-bidi-font-style:normal'>class </i>attributes
+in these files for clustering.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo1;tab-stops:list .5in'><span
+     class=SpellE>mesocyclone.arff</span><span style='mso-tab-count:2'>                     </span>
+     </li>
+ <li class=MsoNormal style='mso-list:l2 level1 lfo1;tab-stops:list .5in'><span
+     class=SpellE>kmtest.arff</span><span style='mso-tab-count:2'>                  </span></li>
+</ul>
+
+<h3>Outputs </h3>
+
+<p class=MsoNormal>For each input data set, your program should produce two
+outputs.</p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoListParagraph style='text-indent:-.25in;mso-list:l1 level1 lfo2'><![if !supportLists]><b
+style='mso-bidi-font-weight:normal'><span style='mso-list:Ignore'>A.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></b><![endif]><b
+style='mso-bidi-font-weight:normal'>Without Normalization<o:p></o:p></b></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.0in;text-indent:-.25in;
+mso-list:l2 level2 lfo1;tab-stops:list 1.0in'><![if !supportLists]><span
+style='mso-list:Ignore'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><i style='mso-bidi-font-style:normal'>Basic K-Means
+Cluster Centers:</i> A text file (“<span class=SpellE><u>YourLogin</u>ClusterCenterBasic<u>KInputFile</u></span>”)
+containing the each of the cluster centers (means), one cluster per line. Add
+one more attribute to your ARFF file as <i style='mso-bidi-font-style:normal'>@attribute
+cluster real </i>as the last attribute to represent cluster id. Each row of
+your output file will have values of a cluster center plus cluster id. Cluster
+ids must start from 1 and increase by 1. If K=5, there will be 5 cluster
+centers listed in the file. If there are 3 clusters, cluster ids may be 1,<span
+class=GramE>,2</span> or 3. <span class=GramE><i style='mso-bidi-font-style:
+normal'>rtemp</i>ClusterCenterBasic3<i style='mso-bidi-font-style:normal'>kmtest.arff</i></span>
+is a sample output file name.</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.0in;text-indent:0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:-.25in;
+mso-list:l6 level1 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><i
+style='mso-bidi-font-style:normal'>Basic K-Means Clustering: </i>A text file (“<span
+class=SpellE><u>YourLogin</u>ClusteringBasic<u>KInputFile</u></span>”)
+containing cluster ids for each pattern vector in the source file (i.e., identifies
+the cluster that the pattern vector belongs to). Add one more attribute to your
+ARFF file as <i style='mso-bidi-font-style:normal'>@attribute cluster real </i>as
+the last attribute. The cluster attribute corresponds to the cluster ID of the
+cluster that the data point belongs to. </p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:-.25in;
+mso-list:l6 level1 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>3.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><i
+style='mso-bidi-font-style:normal'>Bisecting K-means Cluster Centers</i>: A
+similar file for cluster centers need to be generated. The file names should
+look like <span class=SpellE><u>YourLogin</u>ClusterCenterBisecting<u>KInputFile</u></span><u>.</u></p>
+
+<p class=MsoListParagraph><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:-.25in;
+mso-list:l6 level1 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>4.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><i
+style='mso-bidi-font-style:normal'>Bisecting K-means Cluster Centers</i>: A
+similar file for clustering results need to be generated. The file name should
+look like <span class=SpellE><u>YourLogin</u>ClusteringBisecting<u>KInputFile</u></span><u>.</u></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.75in;text-indent:0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:.5in;text-indent:0in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoListParagraph style='text-indent:-.25in;mso-list:l1 level1 lfo2'><![if !supportLists]><b
+style='mso-bidi-font-weight:normal'><span style='mso-list:Ignore'>B.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></b><![endif]><b
+style='mso-bidi-font-weight:normal'>With Normalization<o:p></o:p></b></p>
+
+<p class=MsoNormal><b style='mso-bidi-font-weight:normal'><o:p>&nbsp;</o:p></b></p>
+
+<p class=MsoNormal style='margin-left:.5in'>If the data is to be normalized (if
+–normalize option provided), you should create clustering centers and
+clustering input for normalized data. First normalize the data and apply
+clustering on the normalized data. Your program should generate the following
+files:</p>
+
+<p class=MsoNormal style='margin-left:.5in'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l6 level2 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>a.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusterCenterNormalizedBasic<u>KInputFile</u></span><u>
+</u>: (normalized) cluster centers using basic K-means</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l6 level2 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>b.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusteringNormalizedBasic<u>KInputFile</u></span>
+: (normalized) clustering results for basic K-means</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l6 level2 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>c.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusterCenterNormalizedBisecting<u>KInputFile</u></span>
+: (normalized) cluster centers using bisecting K-means</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l6 level2 lfo3'><![if !supportLists]><span style='mso-list:Ignore'>d.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusteringNormalizedBisecting<u>KInputFile</u></span>:
+: (normalized) clustering results for basic K-means</p>
+
+<p class=MsoBodyTextIndent><u><o:p><span style='text-decoration:none'>&nbsp;</span></o:p></u></p>
+
+<p class=MsoBodyTextIndent>Then apply inverse normalization to cluster centers
+and generate the following files.</p>
+
+<p class=MsoBodyTextIndent><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l5 level1 lfo4'><![if !supportLists]><span style='mso-list:Ignore'>e.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusterCenterUnnormalizedBasic<u>KInputFile</u></span><u>
+</u>: cluster centers in the original domain using basic K-means</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l5 level1 lfo4'><![if !supportLists]><span style='mso-list:Ignore'>f.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusterCenterUnnormalizedBisecting<u>KInputFile</u></span>
+: cluster centers in the original domain using bisecting K-means</p>
+
+<p class=MsoBodyTextIndent><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent>Remap data values to the original values without
+normalization. You may use ID of data values to determine which data they were
+before normalization. Then generate the following files. </p>
+
+<p class=MsoBodyTextIndent><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l3 level1 lfo5'><![if !supportLists]><span style='mso-list:Ignore'>g.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusteringUnnormalizedBasic<u>KInputFile</u></span>
+: clustering results in the original domain for basic K-means</p>
+
+<p class=MsoBodyTextIndent style='margin-left:1.25in;text-indent:-.25in;
+mso-list:l3 level1 lfo5'><![if !supportLists]><span style='mso-list:Ignore'>h.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><![endif]><span
+class=SpellE><u>YourLogin</u>ClusteringUnnormalizedBisecting<u>KInputFile</u></span>:
+clustering results in the original domain for bisecting K-means</p>
+
+<p class=MsoBodyTextIndent><o:p>&nbsp;</o:p></p>
+
+<p class=MsoBodyTextIndent>For normalization option 8 files are generated.
+Without normalization, 4 files are generated.</p>
+
+<span class=SpellE>rtempClusterBisecting</span>
+      –<span class=SpellE>i</span> <span class=SpellE>kmtest.arff</span> –K 5
+      –c class –normalize (or <span class=SpellE>rtempClusterBasic</span> –<span
+      class=SpellE>i</span> <span class=SpellE>kmtest.arff</span> –K 5 –c class
+      –normalize)
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><b
+style='mso-bidi-font-weight:normal'>Sample Outputs<o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'>------------------------
+For cluster centers -------------------------</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@relation <span
+class=SpellE>ClusterCenter_kmtest</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute x real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute y real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute cluster real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@data<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10 10 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>14.5 5 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>3.2 4.1 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10.4 4.2 4<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><b
+style='mso-bidi-font-weight:normal'><o:p>&nbsp;</o:p></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'>-----------------
+For Clustering ------------------------</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@relation <span
+class=SpellE>Clustering_kmtest</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute x real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute y real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@attribute cluster real<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>@data<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>2 4 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>3 3 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>3 4 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>3 5 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>4 3 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>4 5 3<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>9 4 4<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>9 5 4<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>9 9 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>9 10 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10 4 4<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10 5 4<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10 9 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>10 10 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>11 10 1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>15 4 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>15 5 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>15 6 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>16 4 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>16 5 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'>16 6 2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none;text-autospace:none'><span
+style='font-size:11.0pt;font-family:"Courier New"'><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+</body>
+
+</html>
